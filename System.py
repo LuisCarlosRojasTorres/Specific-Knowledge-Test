@@ -13,21 +13,19 @@ Parameters:
 """
 from WellHeads import *
 from Manifold import *
+import math,random
 
 class System :
     ''' A system is composed by the wellheads and its MANIFOLDS 
     connected to the floating unit 
     '''
-    def __init__(self,fileName,posXFloatingUnit=0,posYFloatingUnit=0,minWHC=0,maxWHC=10,clearance=0,maxGLL=inf):
+    def __init__(self,fileName,posXFloatingUnit=0,posYFloatingUnit=0,minWHC=1,maxWHC=10,clearance=0,maxGLL=inf):
         
         self.listOfWellHeads = WellHeads(fileName)
         self.floatingUnit = PointXY(posXFloatingUnit,posYFloatingUnit,'Floating Unit')
         self.floatingUnit.plot()
         
-        self.MP = Manifold(self.listOfWellHeads.getList('Production'))
-        self.MW = Manifold(self.listOfWellHeads.getList('Water Injection'))
-        self.MG = Manifold(self.listOfWellHeads.getList('Gas Injection'))
-        
+               
         self.minWHC = minWHC
         self.maxWHC = maxWHC
         self.clearance = clearance
@@ -41,7 +39,15 @@ class System :
         '''
         return self.floatingUnit.distance(dummyManifold.position)
                            
-    
+    def getRangeOfManifold(self,function):
+        listOfPoints = self.listOfWellHeads.getList(function)
+        minNumManifolds = math.ceil(len(listOfPoints)/self.maxWHC)
+        maxNumManifolds =int(len(listOfPoints)/self.minWHC)
+        
+        result = list()
+        for i in range(minNumManifolds,maxNumManifolds+1):
+            result.append(i)
+        return result
         
     def betterKmeans(self,listOfPointXY,numberOfManifolds,ite=5):
         ''' Return the list of Points for numberOfManifold
@@ -61,7 +67,7 @@ class System :
     
         #The initial locations of the manifolds will be at the same position of 
         #"numberOfManifolds" points from listOfPointXY randomly choosed
-        print('Locs Iniciales: ')
+        #print('Locs Iniciales: ')
         randomNumbers = list()
         #This while avoids to choose the same Point
         while(len(randomNumbers) < numberOfManifolds):
@@ -75,7 +81,7 @@ class System :
         
         #The iterations begin        
         for i in range(ite):
-            print('Iteracion: '+str(i))
+            #print('Iteracion: '+str(i))
             for point in listOfPointXY:
                 dmin = math.inf
                 index=0
@@ -94,9 +100,9 @@ class System :
                     listOfPointsForEachManifold[j].clear()
             #manifoldLocations[j].plot()
             
-            print(manifoldLocations[j])
-        for manifoldPoint in manifoldLocations:
-            manifoldPoint.plot()
+            #print(manifoldLocations[j])
+        #for manifoldPoint in manifoldLocations:
+            #manifoldPoint.plot()
     
         return listOfPointsForEachManifold
     

@@ -25,26 +25,26 @@ class Manifold:
         self.position = self.getCG()
         #self.plot()
         #Calculate the length of flowlines
-        self.getInitialLengthOfFlowLines()
+        self.getInitialLengthOfGathLines()
         #Calculates the optimum location to minimize the length of flowlines
         self.optimize()
         self.plot()
         
-    def getInitialLengthOfFlowLines(self):
+    def getInitialLengthOfGathLines(self):
         '''Determines the Length of the Flowlines for a manifold located at the CENTROID'''
-        self.lengthOfFlowLines = 0
+        self.lengthOfGathLines = 0
         
         for i in self.listOfPoints:
             #print('distancia: '+str(self.position.distance(i)))
             if(self.position.distance(i) < self.clearance or self.position.distance(i) > self.maxGLL):
-                self.lengthOfFlowLines = inf
-                return  self.lengthOfFlowLines
+                self.lengthOfGathLines = inf
+                return  self.lengthOfGathLines
             
-            self.lengthOfFlowLines += self.position.distance(i)
-        print('From Centroid: '+ str(self.lengthOfFlowLines))
-        return self.lengthOfFlowLines
+            self.lengthOfGathLines += self.position.distance(i)
+        #print('From Centroid: '+ str(self.lengthOfFlowLines))
+        return self.lengthOfGathLines
     
-    def getLengthOfFlowLines(self,dummyPoint):
+    def getLengthOfGathLines(self,dummyPoint):
         '''Determines the Length of the Flowlines for a manifold located at a dummyPoint'''
         dummyFlowLines = 0
         
@@ -70,13 +70,13 @@ class Manifold:
                 #print(' j:')
                 dummyPoint = PointXY(i,j,self.position.function)
                 #print(dummyPoint)
-                if (self.lengthOfFlowLines > self.getLengthOfFlowLines(dummyPoint)):
+                if (self.lengthOfGathLines > self.getLengthOfGathLines(dummyPoint)):
                     #print('NEW POSITION FOUND')
-                    #print('old:' + str(self.lengthOfFlowLines)+ ' new: '+ str(self.getLengthOfFlowLines(dummyPoint)))
+                    #print('old:' + str(self.lengthOfFlowLines)+ ' new: '+ str(self.getLengthOfGathLines(dummyPoint)))
                     self.position = dummyPoint
-                    self.lengthOfFlowLines = self.getLengthOfFlowLines(dummyPoint)
-        print('NEW POSITION FOUND')
-        print('New total length:' + str(self.lengthOfFlowLines))
+                    self.lengthOfGathLines = self.getLengthOfGathLines(dummyPoint)
+        #print('NEW POSITION FOUND')
+        #print('New total length:' + str(self.lengthOfFlowLines))
         
         
                 

@@ -30,7 +30,7 @@ class PointXY:
         plt.scatter(self.posX, self.posY,c='black',marker='*')
     
     def __str__(self):
-        return '>> WellHead:  ('+str(self.posX)+' , '+str(self.posY)+')  Function: ' + self.function 
+        return '>> ('+str(self.posX)+' , '+str(self.posY)+')  Function: ' + self.function 
     
 def distance(pointA, pointB):
     '''Calculates the distance between two points: PointA and PointB'''
